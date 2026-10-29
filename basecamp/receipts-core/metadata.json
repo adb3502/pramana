@@ -1,0 +1,15 @@
+{
+  "name": "receipts",
+  "version": "0.1.0",
+  "type": "core",
+  "category": "knowledge",
+  "description": "Pramana evidence graph: loads a graph snapshot into SQLite and answers claim lookups",
+  "main": "receipts_plugin",
+  "dependencies": [],
+
+  "nix": {
+    "packages": { "build": [], "runtime": [] },
+    "external_libraries": [],
+    "cmake": { "find_packages": [], "extra_sources": [], "extra_include_dirs": [], "extra_link_libraries": [] }
+  }
+}

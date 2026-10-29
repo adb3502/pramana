@@ -1,0 +1,293 @@
+[
+ {
+  "id": "ai-water",
+  "kind": "Comparison",
+  "outlet": "four sources",
+  "speaker": "Four published answers",
+  "date": null,
+  "re": "water.*(\\bai\\b|chatgpt|gemini|llm|prompt|query|answer|email|model)|(\\bai\\b|chatgpt|gemini|llm|prompt|query|answer|email).*water",
+  "quote": "How much water does one AI answer use?",
+  "sources": [
+   {
+    "name": "Washington Post",
+    "sub": "with UC Riverside · 18 Sep 2024",
+    "num": "519 mL",
+    "unit": "per 100-word email"
+   },
+   {
+    "name": "Google",
+    "sub": "Elsworth et al. · arXiv 2508.15734 · Aug 2025",
+    "num": "0.26 mL",
+    "unit": "per median prompt"
+   },
+   {
+    "name": "Sam Altman",
+    "sub": "The Gentle Singularity · Jun 2025",
+    "num": "0.32 mL",
+    "unit": "per average query"
+   },
+   {
+    "name": "Ren et al.",
+    "sub": "Making AI Less Thirsty · CACM",
+    "num": "10 to 50 mL",
+    "unit": "per response"
+   }
+  ],
+  "fields": [
+   [
+    "Unit",
+    "one 100-word email",
+    "median Gemini Apps text prompt",
+    "average ChatGPT query",
+    "one medium-length response"
+   ],
+   [
+    "Model and year",
+    "GPT-4, 2024",
+    "Gemini, 2025",
+    "ChatGPT, 2025",
+    "GPT-3, 2023"
+   ],
+   [
+    "Water counted",
+    "UC Riverside estimate",
+    "on-site cooling only",
+    "not stated",
+    "on-site cooling plus off-site power generation"
+   ],
+   [
+    "Statistic",
+    "single figure",
+    "median",
+    "average",
+    "range, by place and time"
+   ],
+   [
+    "Method published",
+    "analysis with UC Riverside",
+    "yes, arXiv paper",
+    "no",
+    "yes, peer reviewed"
+   ]
+  ],
+  "spread": "519 ÷ 0.26 ≈ 2,000×",
+  "found": "Ren et al.: GPT-3 drinks a 500 mL bottle for roughly 10 to 50 medium-length responses, depending on when and where it is deployed.",
+  "checked": "30 Oct 2026",
+  "summary": "The four figures differ in unit, model, year and which water is counted."
+ },
+ {
+  "id": "tweet-rnt",
+  "outlet": "x.com",
+  "speaker": "@AlpacaAurelius",
+  "kind": "Social post",
+  "date": "27 Oct 2026",
+  "quote": "negative thinking destroys your brain. being a silly goose and delusionally optimistic is the ultimate longevity hack",
+  "cited": "Ye et al., BMC Psychiatry 2025: Repetitive negative thinking is associated with cognitive function decline in older adults: a cross-sectional study",
+  "cited_id": "PMC12131619",
+  "trace": 3,
+  "verdict": "The paper reports a cross-sectional association between repetitive negative thinking and lower MoCA scores in older adults in Wuhan; the post turns it into a causal claim that it destroys the brain in everyone.",
+  "found": "424 adults aged 60+, single site, one survey. Top vs bottom quartile of repetitive negative thinking: about 1.6 MoCA points lower. Association absent at ages 80 to 90 and in the least educated.",
+  "fields": [
+   [
+    "Subject",
+    "repetitive negative thinking",
+    "negative thinking",
+    "same"
+   ],
+   [
+    "Outcome",
+    "MoCA cognitive score",
+    "your brain",
+    "measure_as_outcome"
+   ],
+   [
+    "Relation",
+    "associational, cross-sectional",
+    "destroys",
+    "upgraded_to_causal"
+   ],
+   [
+    "Magnitude",
+    "-1.6 MoCA points (Q4 vs Q1)",
+    "destroys",
+    "inflated"
+   ],
+   [
+    "Population",
+    "Chinese adults 60+, one site",
+    "everyone",
+    "overgeneralized"
+   ],
+   [
+    "Modality",
+    "further studies needed",
+    "certain",
+    "strengthened"
+   ]
+  ],
+  "beyond": "Delusional optimism as a longevity hack: the cited paper measured neither optimism nor longevity.",
+  "audit": {
+   "label": "The paper's own citations (50 statement-reference pairs)",
+   "supports": 2,
+   "partial": 18,
+   "not_support": 12,
+   "not_evidence": 6,
+   "unverifiable": 12,
+   "note": "The paper's claim that negative thinking 'depletes the brain's limited resources' cites an eye-tracking experiment on attention, not a study of decline."
+  }
+ },
+ {
+  "id": "labroots-stroke",
+  "outlet": "labroots.com",
+  "speaker": "Labroots",
+  "kind": "News",
+  "date": null,
+  "quote": "Researchers suggest avoiding very high coffee intake (five or more cups a day)",
+  "cited": "INTERSTROKE case-control study, 32 countries (13,462 cases, 13,488 controls)",
+  "cited_id": null,
+  "trace": 2,
+  "verdict": "The paper is a case-control study with a borderline adjusted OR of 1.37 (1.06 to 1.77) for more than 4 cups a day; the article generalizes to everyone and gives no magnitude or uncertainty.",
+  "found": "Coffee more than 4 cups/day vs none: adjusted OR 1.37 (95% CI 1.06 to 1.77) for all stroke. Case-control design.",
+  "fields": [
+   [
+    "Subject",
+    "coffee > 4 cups/day",
+    "five or more cups",
+    "same"
+   ],
+   [
+    "Outcome",
+    "all stroke",
+    "stroke",
+    "same"
+   ],
+   [
+    "Relation",
+    "associational",
+    "associational",
+    "same"
+   ],
+   [
+    "Magnitude",
+    "OR 1.37 (1.06 to 1.77)",
+    "not given",
+    "omitted"
+   ],
+   [
+    "Population",
+    "INTERSTROKE cases and matched controls",
+    "general individuals",
+    "overgeneralized"
+   ],
+   [
+    "Modality",
+    "plain",
+    "plain",
+    "same"
+   ]
+  ]
+ },
+ {
+  "id": "ht-aha",
+  "outlet": "hindustantimes.com",
+  "speaker": "Hindustan Times",
+  "kind": "News",
+  "date": null,
+  "quote": "coffee in these dosages decreases the risk of heart disease, stroke, heart failure, type 2 diabetes, and, interestingly, even atrial fibrillation",
+  "cited": "American Heart Association scientific statement on caffeine and cardiovascular health",
+  "cited_id": null,
+  "trace": 2,
+  "verdict": "The statement calls most of the evidence observational, the diabetes data inconsistent, and gives no 2 to 4 cup dose; the article states five benefits as settled.",
+  "found": "Mostly observational evidence: lower type 2 diabetes risk, lower stroke risk at moderate intake, heart failure 'no relationship or' lower risk; the one AF trial is paired with more premature ventricular contractions.",
+  "fields": [
+   [
+    "Subject",
+    "caffeine / coffee",
+    "coffee in these dosages",
+    "same"
+   ],
+   [
+    "Outcome",
+    "five outcomes, mixed evidence",
+    "five outcomes",
+    "same"
+   ],
+   [
+    "Relation",
+    "mostly observational",
+    "decreases the risk",
+    "upgraded_to_causal"
+   ],
+   [
+    "Magnitude",
+    "no dose stated",
+    "2 to 4 cups a day",
+    "inflated"
+   ],
+   [
+    "Population",
+    "studies reviewed",
+    "readers",
+    "overgeneralized"
+   ],
+   [
+    "Modality",
+    "hedged ('no relationship or')",
+    "certain",
+    "hedge_dropped"
+   ]
+  ],
+  "graph": "Graph check, coffee and cardiovascular disease: 10 studies, 10 independent sources; headline directions 4 lower, 4 null, 1 higher."
+ },
+ {
+  "id": "dcuk-mortality",
+  "outlet": "diabetes.co.uk",
+  "speaker": "Diabetes.co.uk",
+  "kind": "News",
+  "date": null,
+  "quote": "reduce their mortality risk by 22% compared to those who do not drink tea or coffee",
+  "cited": "UK Biobank prospective cohort, joint coffee and tea categories",
+  "cited_id": null,
+  "trace": 2,
+  "verdict": "Causal wording for an observational cohort; the 22% figure is not in the extracted record.",
+  "found": "Prospective cohort with a 16-group joint coffee-tea model versus neither beverage; self-reported intake from one baseline question.",
+  "fields": [
+   [
+    "Subject",
+    "coffee <1-2 and tea 2-4 cups/day",
+    "two to four cups of tea and under one to two of coffee",
+    "same"
+   ],
+   [
+    "Outcome",
+    "all-cause mortality",
+    "mortality risk",
+    "same"
+   ],
+   [
+    "Relation",
+    "associational, cohort",
+    "reduce",
+    "upgraded_to_causal"
+   ],
+   [
+    "Magnitude",
+    "not in record",
+    "22%",
+    "unverifiable"
+   ],
+   [
+    "Population",
+    "UK Biobank participants",
+    "not stated",
+    "same"
+   ],
+   [
+    "Modality",
+    "plain",
+    "plain",
+    "same"
+   ]
+  ]
+ }
+]

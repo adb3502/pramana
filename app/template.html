@@ -1,0 +1,356 @@
+<title>Pramana</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+:root{
+  --ink:#18301f; --muted:#55665b; --line:#c9d0c8; --bg:#e6e8e3; --panel:#f1f2ee;
+  --paper:#f8f6ef; --paper-ink:#1c241e; --paper-line:#c8c9c0;
+  --accent:#18301f; --on-accent:#f1f2ee; --mark:#f7d678; --on-mark:#1c241e;
+  --stamp:#b23a2a; --ok:#2d6a45; --null:#8d978f;
+  --lower:#2f6c8f; --higher:#b5652b;
+  --display:"Newsreader", Georgia, serif;
+  --body:"Instrument Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ink:#e3e8e2; --muted:#9db0a3; --line:#2b3a31; --bg:#101a14; --panel:#16231b;
+  --paper:#ecebe3; --paper-ink:#1a211c; --paper-line:#b9bbb2;
+  --accent:#d9e6dc; --on-accent:#101a14; --stamp:#d8604f; --ok:#5fb383; --null:#7f8c83;
+  --lower:#6aa6c8; --higher:#e08b52; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --ink:#e3e8e2; --muted:#9db0a3; --line:#2b3a31; --bg:#101a14; --panel:#16231b;
+  --paper:#ecebe3; --paper-ink:#1a211c; --paper-line:#b9bbb2;
+  --accent:#d9e6dc; --on-accent:#101a14; --stamp:#d8604f; --ok:#5fb383; --null:#7f8c83;
+  --lower:#6aa6c8; --higher:#e08b52; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--body);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+header.top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px 24px;padding-block:6px 14px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:baseline;gap:6px 14px;flex-wrap:wrap}
+.brand b{font:500 30px/1 var(--display);letter-spacing:-.01em}
+.brand span{color:var(--muted);font:italic 400 14px var(--display)}
+nav{display:flex;gap:2px;flex-wrap:wrap}
+nav a{font:500 14px var(--body);color:var(--muted);text-decoration:none;padding:6px 10px;border-bottom:2px solid transparent}
+nav a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--ink)}
+nav a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.stats{display:flex;flex-wrap:wrap;gap:4px 16px;font:400 13px var(--body);color:var(--muted);padding-block:10px 0;font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink);font-weight:600}
+h1{font:400 clamp(30px,4.6vw,50px)/1.08 var(--display);letter-spacing:-.015em;margin:30px 0 10px;text-wrap:balance;max-width:24ch}
+.lede{color:var(--muted);max-width:62ch;margin:0 0 20px;font-size:16px}
+mark{background:var(--mark);color:var(--on-mark);padding:0 .15em;border-radius:2px}
+.ask{display:grid;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
+.ask textarea{width:100%;min-height:64px;resize:vertical;border:0;background:transparent;color:var(--ink);font:400 22px/1.35 var(--display)}
+.ask textarea:focus{outline:none}
+.ask .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:400 13px var(--body);border:1px solid var(--line);background:transparent;color:var(--ink);padding:4px 10px;border-radius:4px;cursor:pointer;text-align:left}
+.chip:hover{background:var(--bg)}
+.go{font:600 14px var(--body);background:var(--accent);color:var(--on-accent);border:0;border-radius:4px;padding:10px 18px;cursor:pointer}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:24px;margin-top:24px;align-items:start}
+.grid.wide{grid-template-columns:minmax(0,1fr)}
+.grid.wide #rcol{order:-1}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}#rcol{order:-1}}
+.sec-h{font:600 14px var(--body);color:var(--ink);margin:0 0 10px;display:flex;justify-content:space-between;gap:8px}
+.sec-h span+span{color:var(--muted);font-weight:400}
+.pair{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:14px 14px 10px;display:grid;gap:8px}
+.pairs{display:grid;gap:10px}
+.pair h3{margin:0;font:500 19px/1.25 var(--display);text-wrap:balance}
+.pair h3 em{font-style:normal;color:var(--muted)}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font:400 13px var(--body);color:var(--muted);font-variant-numeric:tabular-nums}
+.meta b{color:var(--ink);font-weight:600}
+.dir{display:flex;height:8px;border-radius:2px;overflow:hidden;background:var(--line)}
+.dir i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font:400 12px var(--body);color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:1px;margin-right:5px;vertical-align:-1px;background:var(--c)}
+details.est summary{cursor:pointer;font:500 13px var(--body);color:var(--ink);text-decoration:underline;text-underline-offset:3px;list-style:none}
+details.est summary::-webkit-details-marker{display:none}
+.estlist{margin-top:8px;display:grid;gap:4px;max-height:260px;overflow:auto}
+.est-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;font-size:13px;border-top:1px dashed var(--line);padding-top:4px}
+.est-row .v{font:500 12.5px var(--mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+.est-row small{color:var(--muted);display:block}
+.claims{display:grid;gap:8px}
+.claim{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:14px}
+.claim .tag{font:500 12px var(--body);padding:1px 6px;border-radius:3px;border:1px solid var(--line);color:var(--muted);margin-right:6px}
+.claim .tag.causal{border-color:var(--stamp);color:var(--stamp)}
+.claim small{display:block;color:var(--muted);margin-top:4px}
+.empty{color:var(--muted);font-size:14px;background:var(--panel);border:1px dashed var(--line);border-radius:6px;padding:14px}
+/* the receipt: thermal paper */
+.receipt{position:relative;background:var(--paper);color:var(--paper-ink);font:13px/1.5 var(--mono);padding:22px 20px 26px;max-width:460px;width:100%;margin-inline:auto;
+  box-shadow:0 1px 0 rgba(0,0,0,.04),0 14px 30px -18px rgba(24,48,31,.45);
+  -webkit-mask:linear-gradient(#000,#000) top/100% calc(100% - 10px) no-repeat,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) bottom/14px 10px repeat-x;
+          mask:linear-gradient(#000,#000) top/100% calc(100% - 10px) no-repeat,conic-gradient(from 135deg at top,#0000,#000 1deg 89deg,#0000 90deg) bottom/14px 10px repeat-x}
+.receipt.cmp{max-width:1000px}
+.receipt .head{text-align:center;display:grid;gap:2px;padding-bottom:10px;border-bottom:1px dashed var(--paper-line)}
+.receipt .head b{font:700 16px var(--mono);letter-spacing:.18em}
+.receipt .q{padding:12px 0;border-bottom:1px dashed var(--paper-line);font-size:13.5px}
+.receipt .q span{display:block;font-size:11px;letter-spacing:.1em;opacity:.7;margin-bottom:4px}
+.receipt .q.big{font-size:17px}
+.receipt table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12px;color:inherit;font-family:inherit}
+.receipt .stack{display:none}
+@media (max-width:640px){.receipt.cmp .wide-t{display:none}.receipt .stack{display:grid;gap:0}}
+.receipt .stack section{padding:10px 0;border-bottom:1px dotted var(--paper-line)}
+.receipt .stack h4{margin:0 0 2px;font:700 13px var(--mono)}
+.receipt .stack h4 small{display:block;font-weight:400;font-size:10.5px;opacity:.75}
+.receipt .stack dl{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;margin:6px 0 0;font-size:12px}
+.receipt .stack dt{font-weight:700}
+.receipt .stack dd{margin:0}
+.receipt th{text-align:left;font-weight:700;font-size:10.5px;letter-spacing:.08em;padding:4px 6px 4px 0;border-bottom:1px solid var(--paper-line);vertical-align:top}
+.receipt td{vertical-align:top;padding:5px 6px 5px 0;border-bottom:1px dotted var(--paper-line)}
+.receipt td.f{font-weight:700;white-space:nowrap}
+.receipt .num{font:700 20px/1.1 var(--mono);white-space:nowrap}
+.receipt .num mark{padding:0 .2em}
+.receipt .src small{display:block;font-weight:400;letter-spacing:0;opacity:.75;font-size:10.5px;margin-top:2px}
+.receipt .vd{display:block;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.receipt .vd.x{font-weight:700;color:var(--stamp)}
+.receipt .vd.o{color:var(--ok)}
+.receipt .tot{display:flex;justify-content:space-between;gap:12px;font-weight:700;padding:8px 0;border-top:1px dashed var(--paper-line);border-bottom:1px dashed var(--paper-line);margin-top:4px}
+.receipt .note{padding-top:10px;font-size:12.5px}
+.receipt .note p{margin:0 0 8px;max-width:80ch}
+.receipt .stampline{text-align:center;padding:10px 0 2px}
+.receipt .stamp-unused{display:inline-block;transform:rotate(-4deg);border:2px solid var(--stamp);color:var(--stamp);font:600 16px var(--display);letter-spacing:.04em;padding:3px 10px;border-radius:4px;opacity:.88;background:color-mix(in srgb,var(--paper) 70%,transparent)}
+.receipt .stamp.ok{border-color:var(--ok);color:var(--ok)}
+.receipt .stamp.ink{border-color:var(--paper-ink);color:var(--paper-ink)}
+.receipt .bars{display:grid;grid-template-columns:auto 1fr auto;gap:3px 8px;align-items:center;font-size:11.5px;margin:6px 0}
+.receipt .bars i{display:block;height:7px;background:var(--paper-ink);opacity:.75}
+.receipt .foot{text-align:center;font-size:11px;opacity:.7;padding-top:10px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:24px;margin-top:20px;align-items:start}
+.gallery .receipt.cmp{grid-column:1/-1}
+.maptable{width:100%;border-collapse:collapse;font-size:14px}
+.maptable th{text-align:left;font:600 13px var(--body);color:var(--muted);padding:8px 8px 8px 0;border-bottom:1px solid var(--line)}
+.maptable td{padding:8px 8px 8px 0;border-bottom:1px solid var(--line);vertical-align:middle}
+.maptable td.n{font:500 13px var(--mono);font-variant-numeric:tabular-nums}
+.maptable tr{cursor:pointer}
+.maptable tbody tr:hover td{background:var(--bg)}
+.tablebox{overflow-x:auto;background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 14px}
+.filter{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.filter input{flex:1 1 220px;min-width:0;font:400 15px var(--body);padding:9px 12px;border-radius:4px;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.lensbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:14px;font-size:14px;color:var(--muted)}
+.lensbar label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:4px;padding:4px 10px;cursor:pointer;color:var(--ink)}
+.lensbar input{accent-color:var(--ink);margin:0}
+.lensbar label:has(input:checked){background:var(--panel);border-color:var(--ink)}
+body.raw .lens{display:none!important}
+body:not(.raw) .raw{display:none!important}
+.receipt .lensline{margin-top:10px;font-size:11px;border-top:1px dashed var(--paper-line);padding-top:8px}
+.receipt .lensline summary{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.receipt .lensline dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:8px 0 0}
+.receipt .lensline dt{font-weight:700;white-space:nowrap}
+.receipt .lensline dd{margin:0}
+.receipt .rawline{margin:10px 0 0;font-size:11px;border-top:1px dashed var(--paper-line);padding-top:8px}
+.receipt .q span span{display:inline;margin:0;letter-spacing:inherit}
+.receipt td .vd.lens{text-transform:none;letter-spacing:0;font-size:11px;margin-top:3px}
+footer{margin-top:40px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+@media (prefers-reduced-motion:no-preference){.receipt.print{animation:print .7s cubic-bezier(.2,.7,.2,1) both}@keyframes print{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b>Pramana</b><span>pramāṇa: a valid means of knowing</span></div>
+    <nav aria-label="Views">
+      <a href="#check" data-v="check">Check</a>
+      <a href="#receipts" data-v="receipts">Receipts</a>
+      <a href="#map" data-v="map">Evidence map</a>
+    </nav>
+  </header>
+  <div class="stats" id="stats"></div>
+    <div class="lensbar" role="radiogroup" aria-label="Lens"><span>Lens</span>
+      <label><input type="radio" name="lens" value="fidelity" checked> Pramana fidelity lens v1</label>
+      <label><input type="radio" name="lens" value="raw"> Raw data (no lens)</label>
+    </div>
+
+  <section id="v-check">
+    <h1>Any claim, traced to the numbers it rests on.</h1>
+    <p class="lede">Paste a headline, a post or a line from a paper. Pramana finds the studies that measured it and prints a receipt that sets each field of the claim beside what the source reported.</p>
+    <form class="ask" id="askf">
+      <label for="q" class="sec-h" style="margin:0">Claim</label>
+      <textarea id="q" name="q">How much water does one AI answer use?</textarea>
+      <div class="row">
+        <div class="chips" id="chips"></div>
+        <button class="go" type="submit">Print receipt</button>
+      </div>
+    </form>
+    <div class="grid">
+      <div>
+        <div class="sec-h"><span>Studies that measured this</span><span id="pcount"></span></div>
+        <div class="pairs" id="pairs"></div>
+        <div class="sec-h" style="margin-top:22px"><span>What the authors concluded</span><span id="ccount"></span></div>
+        <div class="claims" id="claims"></div>
+      </div>
+      <div id="rcol"></div>
+    </div>
+  </section>
+
+  <section id="v-receipts" hidden>
+    <h1>Receipts</h1>
+    <p class="lede">Published claims set beside the sources they cite. Each field of the claim sits next to the source's own record.</p>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section id="v-map" hidden>
+    <h1>Evidence map</h1>
+    <p class="lede">Every exposure and outcome a study in the graph related, with the direction of each headline estimate. Sources counts independent cohorts and datasets: five papers from one cohort are one source.</p>
+    <div class="filter"><label for="mf" class="sec-h" style="margin:0">Filter</label><input id="mf" placeholder="coffee, stroke, water, cognition"></div>
+    <div class="tablebox"><table class="maptable"><thead><tr><th>Exposure</th><th>Outcome</th><th>Studies</th><th>Sources</th><th style="min-width:140px">Headline direction</th></tr></thead><tbody id="mapbody"></tbody></table></div>
+  </section>
+
+  <footer><span id="corpus"></span><span>Two model readers per paper, disagreements judged, every number linked to its sentence. Snapshot 30 Oct 2026.</span></footer>
+</div>
+
+<script id="snap" type="application/json">/*SNAP*/</script>
+<script id="cur" type="application/json">/*CUR*/</script>
+<script>
+const D = JSON.parse(document.getElementById('snap').textContent);
+const CUR = JSON.parse(document.getElementById('cur').textContent);
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt = n => Number(n).toLocaleString('en-US');
+const STOP = new Set('the a an of and or to in on for with by is are was were be been it its this that than as at from into your you our their his her them they we i me my can could may might will would should does do did not no but also more most less very ultimate just being has have had about over per day study studies new says said found finds shows researchers according'.split(' '));
+const stem = w => w.replace(/(ing|ed|es|s)$/,'').replace(/ies$/,'y');
+const toks = s => (String(s).toLowerCase().match(/[a-z0-9]+/g) || []).filter(w => w.length > 2 && !STOP.has(w)).map(stem);
+
+// concept index
+const K = D.K.map((k, i) => ({i, label: k[0], n: k[1], words: [...new Set(toks(k[0]).concat(...(k[2] || []).map(toks)))], lw: toks(k[0])}));
+const P = D.P.map(p => ({x: p[0], y: p[1], est: p[2], studies: p[3], sources: p[4], lower: p[5], nul: p[6], higher: p[7], noci: p[8]}));
+const S = D.S;
+const rowsBy = new Map();
+for (const r of D.R) { const k = r[1] + '|' + r[2]; if (!rowsBy.has(k)) rowsBy.set(k, []); rowsBy.get(k).push(r); }
+
+$('#stats').innerHTML = [[D.counts.study, 'papers read in full'], [D.counts.source, 'independent cohorts and datasets'], [D.counts.estimate, 'extracted estimates'], [CUR.length, 'receipts']].map(([n, l]) => `<span><b>${fmt(n)}</b> ${l}</span>`).join('');
+$('#corpus').textContent = 'Corpus: ' + D.corpus;
+
+// everyday words to the vocabulary the graph uses (MeSH-style headings)
+const EXPAND = [[/negative thinking|overthinking|worry|worrying|brooding/g, ' rumination cognitive '], [/\bbrain\b|memory|thinking skills/g, ' cognition cognitive dysfunction '],
+  [/heart disease|heart attack|cardiac/g, ' heart diseases cardiovascular diseases coronary disease '], [/\bdeath\b|die |dying|longevity|lifespan/g, ' mortality '],
+  [/blood sugar|glucose/g, ' blood glucose '], [/\bai\b|chatgpt|data cent(er|re)s?/g, ' data center water '], [/\bbp\b/g, ' blood pressure ']];
+const expand = q => EXPAND.reduce((s, [re, w]) => s.replace(re, m => m + w), ' ' + String(q).toLowerCase() + ' ');
+function conceptScores(q) {
+  q = expand(q); const qt = new Set(toks(q)); const out = [];
+  for (const k of K) {
+    if (!k.lw.length) continue;
+    const full = k.lw.every(w => qt.has(w));
+    const hit = k.words.filter(w => qt.has(w)).length;
+    if (full || hit >= 2) out.push({i: k.i, s: (full ? 2 : 0) + hit / Math.max(k.lw.length, 1) + Math.log10(1 + k.n) * .15});
+  }
+  return new Map(out.sort((a, b) => b.s - a.s).slice(0, 25).map(o => [o.i, o.s]));
+}
+function dirbar(p) {
+  const t = p.lower + p.nul + p.higher + p.noci || 1;
+  const seg = (v, c) => v ? `<i style="width:${(v / t * 100).toFixed(1)}%;background:var(${c})" title="${v}"></i>` : '';
+  return `<div class="dir" role="img" aria-label="${p.lower} lower, ${p.nul} no clear effect, ${p.higher} higher, ${p.noci} no interval">${seg(p.lower, '--lower')}${seg(p.nul, '--null')}${seg(p.higher, '--higher')}${seg(p.noci, '--line')}</div>`;
+}
+const legend = `<div class="legend"><span style="--c:var(--lower)">lower, interval clear of no effect</span><span style="--c:var(--null)">interval crosses no effect</span><span style="--c:var(--higher)">higher, interval clear</span></div>`;
+function estList(p) {
+  const rs = (rowsBy.get(p.x + '|' + p.y) || []).slice().sort((a, b) => (b[5] != null) - (a[5] != null)).slice(0, 40);
+  return rs.map(r => { const s = S[r[0]]; const ci = r[5] != null && r[6] != null ? ` (${r[5]} to ${r[6]})` : '';
+    return `<div class="est-row"><div>${esc((s[1] || s[0]).slice(0, 110))}<small>${esc(r[7] || '')}${r[8] ? ' vs ' + esc(r[8]) : ''} · ${esc(s[0])}</small></div><div class="v">${esc(r[3])} ${r[4]}${ci}</div></div>`; }).join('');
+}
+function pairCard(p) {
+  return `<article class="pair"><h3>${esc(K[p.x].label)} <em>→</em> ${esc(K[p.y].label)}</h3>
+    <div class="meta"><span><b>${p.studies}</b> ${p.studies === 1 ? 'study' : 'studies'}</span><span><b>${p.sources}</b> independent ${p.sources === 1 ? 'source' : 'sources'}</span><span><b>${p.est}</b> ${p.est === 1 ? 'estimate' : 'estimates'}</span></div>
+    ${dirbar(p)}${legend}
+    <details class="est"><summary>Show the numbers</summary><div class="estlist">${estList(p)}</div></details></article>`;
+}
+function findClaims(q) {
+  const qt = toks(q); if (!qt.length) return [];
+  const out = [];
+  S.forEach((s, si) => (s[4] || []).forEach(c => { const ct = new Set(toks(c[2])); const h = qt.filter(w => ct.has(w)).length; if (h >= Math.min(2, qt.length)) out.push({h, si, c}); }));
+  return out.sort((a, b) => b.h - a.h).slice(0, 8);
+}
+function matchCurated(q) {
+  for (const r of CUR) if (r.re && new RegExp(r.re, 'i').test(q)) return r;
+  const qt = new Set(toks(q)); let best = null;
+  for (const r of CUR) { if (r.sources) continue; const rt = toks(r.quote); const h = rt.filter(w => qt.has(w)).length / Math.max(4, Math.min(rt.length, 10)); if (h >= .35 && (!best || h > best.h)) best = {h, r}; }
+  return best && best.r;
+}
+// Pramana fidelity lens v1 (adb). The data layer holds only what each source and claim reported; every label below is an interpretation by this lens.
+const LENS = {name: 'Pramana fidelity lens v1', author: 'adb', rules: {
+  same: ['match', 'The claim restates the value the source reports.'],
+  measure_as_outcome: ['measure read as organ', 'The claim names a broad outcome (the brain, the heart) where the source measured one test score or marker.'],
+  upgraded_to_causal: ['association read as cause', 'The claim uses causal verbs (causes, destroys, reduces) where the source design supports association only.'],
+  inflated: ['inflated', 'The claim\'s stated or implied size exceeds the source\'s estimate or its upper interval.'],
+  overgeneralized: ['overgeneralized', 'The claim applies to a wider population than the source sampled.'],
+  strengthened: ['certainty raised', 'The claim states as settled what the source qualified or called preliminary.'],
+  hedge_dropped: ['hedge dropped', 'The claim omits a qualifier the source attached to this finding.'],
+  omitted: ['omitted', 'The source reports a value for this field and the claim leaves it out.'],
+  unverifiable: ['not in record', 'The claim\'s value does not appear in the extracted source record.'],
+  species_jump: ['animal read as human', 'The source studied animals and the claim speaks of people.'],
+  reversed: ['direction reversed', 'The claim\'s direction is opposite to the source\'s estimate.'],
+  narrower: ['narrower', 'The claim covers a subset of what the source reported.'],
+  broader: ['broader', 'The claim covers more than the source reported.']}};
+const lensLabel = k => (LENS.rules[k] || [k])[0];
+function lensLine(keys) {
+  const ks = [...new Set(keys)].filter(k => LENS.rules[k]);
+  return `<details class="lensline lens"><summary>Interpreted with ${esc(LENS.name)} · ${esc(LENS.author)} · rules</summary><dl>${(ks.length ? ks : Object.keys(LENS.rules)).map(k => `<dt>${esc(LENS.rules[k][0])}</dt><dd>${esc(LENS.rules[k][1])}</dd>`).join('')}</dl></details>`;
+}
+const rawLine = `<p class="rawline raw">Raw data: source and claim values only, no lens applied.</p>`;
+function cmpReceipt(r, anim) {
+  const S4 = r.sources;
+  return `<article class="receipt cmp${anim ? ' print' : ''}" aria-label="Comparison receipt">
+    <div class="head"><b>PRAMANA RECEIPT</b><span>${S4.length} published answers to one question</span></div>
+    <div class="q big"><span>QUESTION</span>${esc(r.quote)}</div>
+    <div class="wide-t" style="overflow-x:auto"><table><thead><tr><th></th>${S4.map(s => `<th class="src">${esc(s.name)}<small>${esc(s.sub)}</small></th>`).join('')}</tr></thead><tbody>
+      <tr><td class="f">ANSWER</td>${S4.map(s => `<td><span class="num"><mark>${esc(s.num)}</mark></span><span class="vd">${esc(s.unit)}</span></td>`).join('')}</tr>
+      ${r.fields.map(f => `<tr><td class="f">${esc(f[0])}</td>${f.slice(1).map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}
+    </tbody></table></div>
+    <div class="stack">${S4.map((s, i) => `<section><h4>${esc(s.name)}<small>${esc(s.sub)}</small></h4><span class="num"><mark>${esc(s.num)}</mark></span><span class="vd">${esc(s.unit)}</span><dl>${r.fields.map(f => `<dt>${esc(f[0])}</dt><dd>${esc(f[i + 1])}</dd>`).join('')}</dl></section>`).join('')}</div>
+    <div class="tot"><span>SPREAD, HIGHEST TO LOWEST</span><span>${esc(r.spread)}</span></div>
+    <div class="note"><p>${esc(r.summary)}</p><p><b>Underlying paper.</b> ${esc(r.found)}</p></div>
+    ${lensLine([])}${rawLine}
+    <div class="foot">ref ${esc(r.id)} · checked ${esc(r.checked)}</div></article>`;
+}
+function receipt(r, anim) {
+  if (r.sources) return cmpReceipt(r, anim);
+  const diff = r.fields.filter(f => !['same', 'narrower', 'unverifiable'].includes(f[3])).length;
+  const tr = ['none', 'vague', 'identifiable', 'direct link'][r.trace];
+  const audit = r.audit ? `<p><b>${esc(r.audit.label)}</b></p><div class="bars">${[['supports', r.audit.supports], ['partly', r.audit.partial], ['does not', r.audit.not_support], ['not evidence', r.audit.not_evidence], ['no text', r.audit.unverifiable]].map(([l, v]) => `<span>${l}</span><i style="width:${v * 4}%"></i><span>${v}</span>`).join('')}</div><p>${esc(r.audit.note)}</p>` : '';
+  return `<article class="receipt${anim ? ' print' : ''}" aria-label="Receipt for ${esc(r.outlet)}">
+    <div class="head"><b>PRAMANA RECEIPT</b><span>${esc(r.speaker)} · ${esc(r.kind)}${r.date ? ' · ' + esc(r.date) : ''}</span></div>
+    <div class="q"><span>CLAIM AS PUBLISHED</span>“${esc(r.quote)}”</div>
+    <div class="q"><span>CITED SOURCE<span class="lens"> · TRACEABILITY: ${tr.toUpperCase()}</span></span>${esc(r.cited)}</div>
+    <div style="overflow-x:auto"><table><thead><tr><th>FIELD</th><th>SOURCE SAYS</th><th>CLAIM SAYS</th></tr></thead><tbody>
+      ${r.fields.map(f => `<tr><td class="f">${esc(f[0])}</td><td>${esc(f[1])}</td><td>${esc(f[2])}<span class="vd lens ${f[3] === 'same' ? 'o' : f[3] === 'unverifiable' ? '' : 'x'}" title="${esc((LENS.rules[f[3]] || ['', ''])[1])}">difference: ${esc(lensLabel(f[3]))}</span></td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="tot lens"><span>FIELDS THAT DIFFER</span><span>${diff} / ${r.fields.length}</span></div>
+    <div class="note"><p><b>What the source found.</b> ${esc(r.found)}</p><div class="lens"><p><b>Lens note.</b> ${esc(r.verdict)}</p>${r.beyond ? `<p><b>Beyond the source.</b> ${esc(r.beyond)}</p>` : ''}${audit}</div>${r.graph ? `<p>${esc(r.graph)}</p>` : ''}</div>
+    ${lensLine(r.fields.map(f => f[3]))}${rawLine}
+    <div class="foot">ref ${esc(r.id)} · checked 29 Oct 2026</div></article>`;
+}
+function run(q, anim) {
+  const cs = conceptScores(q);
+  let ps = P.map(p => ({p, s: (cs.get(p.x) || 0) + (cs.get(p.y) || 0), both: cs.has(p.x) && cs.has(p.y)})).filter(o => o.s > 0);
+  const both = ps.filter(o => o.both); ps = (both.length ? both : ps).sort((a, b) => b.s - a.s || b.p.studies - a.p.studies).slice(0, 6);
+  $('#pairs').innerHTML = ps.length ? ps.map(o => pairCard(o.p)).join('') : `<div class="empty">Nothing in the graph matches these words yet. It covers coffee and caffeine, repetitive negative thinking, and AI and data center water.</div>`;
+  $('#pcount').textContent = ps.length ? ps.length + (ps.length === 1 ? ' pair' : ' pairs') : '';
+  const cl = findClaims(q);
+  $('#claims').innerHTML = cl.length ? cl.map(o => { const s = S[o.si]; const k = o.c[0]; return `<div class="claim"><span class="tag ${k === 'causal' ? 'causal' : k === 'null' ? 'null' : ''}">${esc(k)}</span>${esc(o.c[2])}<small>${esc(o.c[1])} · ${esc((s[1] || '').slice(0, 90))} · ${esc(s[2] || '').slice(0, 60)}</small></div>`; }).join('') : `<div class="empty">No author conclusion shares enough words with this claim.</div>`;
+  $('#ccount').textContent = cl.length ? cl.length + ' shown' : '';
+  const r = matchCurated(q);
+  $('#rcol').innerHTML = r ? receipt(r, anim) : `<div class="empty">No receipt on file for this exact claim. The studies listed are what the graph holds on its subject and outcome.</div>`;
+  $('.grid').classList.toggle('wide', !!(r && r.sources));
+}
+const EX = ['How much water does one AI answer use?', 'negative thinking destroys your brain', 'coffee lowers the risk of heart disease, stroke and heart failure', 'avoid five or more cups of coffee to prevent stroke', 'tea and coffee reduce mortality by 22%', 'caffeine raises blood pressure'];
+$('#chips').innerHTML = EX.map(e => `<button type="button" class="chip">${esc(e)}</button>`).join('');
+$('#chips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; $('#q').value = b.textContent; run(b.textContent, true); });
+$('#askf').addEventListener('submit', e => { e.preventDefault(); run($('#q').value, true); });
+
+document.querySelectorAll('input[name=lens]').forEach(i => i.addEventListener('change', () => document.body.classList.toggle('raw', i.value === 'raw' && i.checked)));
+$('#gallery').innerHTML = CUR.map(r => receipt(r, false)).join('');
+
+const PS = P.slice().sort((a, b) => b.studies - a.studies || b.est - a.est);
+function drawMap() {
+  const f = toks($('#mf').value);
+  const rows = PS.filter(p => !f.length || f.every(w => (K[p.x].label + ' ' + K[p.y].label).toLowerCase().includes(w))).slice(0, 120);
+  $('#mapbody').innerHTML = rows.map(p => `<tr data-q="${esc(K[p.x].label + ' ' + K[p.y].label)}"><td>${esc(K[p.x].label)}</td><td>${esc(K[p.y].label)}</td><td class="n">${p.studies}</td><td class="n">${p.sources}</td><td>${dirbar(p)}</td></tr>`).join('');
+}
+$('#mf').addEventListener('input', drawMap);
+$('#mapbody').addEventListener('click', e => { const tr = e.target.closest('tr'); if (!tr) return; $('#q').value = tr.dataset.q; location.hash = 'check'; run(tr.dataset.q, true); });
+drawMap();
+
+function route() {
+  const v = ['check', 'receipts', 'map'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'check';
+  for (const n of ['check', 'receipts', 'map']) document.getElementById('v-' + n).hidden = n !== v;
+  document.querySelectorAll('nav a').forEach(a => a.setAttribute('aria-current', a.dataset.v === v ? 'page' : 'false'));
+}
+addEventListener('hashchange', route); route();
+run($('#q').value, false);
+</script>
