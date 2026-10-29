@@ -27,6 +27,16 @@ basecamp/             Logos Basecamp modules: receipts-core (C++/Qt, SQLite) and
 deck/                 demo day slides
 ```
 
+## Links
+
+| | |
+|---|---|
+| Protocol app (bring your own key) | https://adb3502.github.io/pramana-protocol/ |
+| Deck | https://adb3502.github.io/pramana-deck/ |
+| Knowledge base snapshot on Logos Storage | `zDvZRwzm9SDY3WQvdd87mQPz1xquMwQELC18qdPVCRUQ9f4hZPtq` |
+
+Fetch the snapshot with `logosctl call storage_module downloadToUrl "<CID>" "$PWD/pramana_snapshot.json" false 65536 false false`.
+
 ## Pipeline
 
 | Stage | Steps |
