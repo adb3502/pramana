@@ -20,6 +20,9 @@ public:
     Q_INVOKABLE virtual QString listReceipts() = 0;                      // media fidelity receipts
     Q_INVOKABLE virtual QString matchReceipt(const QString& query) = 0;  // the receipt whose quote best matches, or {}
     Q_INVOKABLE virtual bool    setSnapshotCid(const QString& cid) = 0;  // remember which Logos Storage CID the data came from
+    // Claude through the Pramana relay (the API key never enters the module). Start returns a job id; poll returns {text, done, error}.
+    Q_INVOKABLE virtual QString askStart(const QString& prompt, const QString& maxTokens) = 0;
+    Q_INVOKABLE virtual QString askPoll(const QString& id) = 0;
 };
 
 #define ReceiptsInterface_iid "org.logos.ReceiptsInterface"

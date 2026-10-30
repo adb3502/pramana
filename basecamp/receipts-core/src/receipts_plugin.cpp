@@ -17,6 +17,9 @@
 #include <QStandardPaths>
 #include <QUrl>
 #include <QVariant>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
 #include <algorithm>
 #include <cmath>
 
@@ -296,4 +299,78 @@ QString ReceiptsPlugin::matchReceipt(const QString& query)
         if (s >= best) { best = s; json = q.value(1).toString(); }
     }
     return json;
+}
+
+// ── Claude via the Pramana relay ────────────────────────────────────────
+// Fallback relay; the live address is read from relay.json on the Pramana site so a tunnel restart needs no rebuild.
+static const char* RELAY_URL = "https://identify-sensors-screensaver-homeless.trycloudflare.com";
+static const char* RELAY_INDEX = "https://adb3502.github.io/pramana-protocol/relay.json";
+
+QString ReceiptsPlugin::askStart(const QString& prompt, const QString& maxTokens)
+{
+    if (!m_net) m_net = new QNetworkAccessManager(this);
+    const QString id = QString::number(++m_jobSeq);
+    m_jobs.insert(id, AskJob{});
+    QJsonObject msg{{"role", "user"}, {"content", prompt}};
+    QJsonObject body{{"model", "claude-sonnet-4-5"}, {"max_tokens", qBound(64, maxTokens.toInt() > 0 ? maxTokens.toInt() : 1200, 1500)},
+                     {"stream", true}, {"messages", QJsonArray{msg}}};
+    const QByteArray payload = QJsonDocument(body).toJson(QJsonDocument::Compact);
+    QString env = qEnvironmentVariable("PRAMANA_RELAY");
+    if (!env.isEmpty()) { postAsk(id, env, payload); return id; }
+    QNetworkRequest ireq{QUrl(QString::fromLatin1(RELAY_INDEX))};
+    ireq.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+    ireq.setTransferTimeout(6000);
+    QNetworkReply* ir = m_net->get(ireq);
+    connect(ir, &QNetworkReply::finished, this, [this, ir, id, payload]() {
+        QString base = QJsonDocument::fromJson(ir->readAll()).object().value("relay").toString();
+        if (!base.startsWith("https://")) base = QString::fromLatin1(RELAY_URL);
+        ir->deleteLater();
+        postAsk(id, base + "/ai", payload);
+    });
+    return id;
+}
+
+void ReceiptsPlugin::postAsk(const QString& id, const QString& url, const QByteArray& payload)
+{
+    QNetworkRequest req{QUrl(url)};
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    QNetworkReply* reply = m_net->post(req, payload);
+    auto drain = [this, id](const QByteArray& chunk) {
+        auto it = m_jobs.find(id); if (it == m_jobs.end()) return;
+        it->buf += chunk;
+        int nl;
+        while ((nl = it->buf.indexOf('\n')) >= 0) {
+            const QByteArray line = it->buf.left(nl).trimmed(); it->buf.remove(0, nl + 1);
+            if (!line.startsWith("data:")) continue;
+            const QJsonObject ev = QJsonDocument::fromJson(line.mid(5).trimmed()).object();
+            if (ev.value("type").toString() == "content_block_delta") it->text += ev.value("delta").toObject().value("text").toString();
+        }
+    };
+    connect(reply, &QNetworkReply::readyRead, this, [reply, drain]() {
+        if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() == 200) drain(reply->readAll());
+    });
+    connect(reply, &QNetworkReply::finished, this, [this, reply, id, drain]() {
+        auto it = m_jobs.find(id);
+        if (it != m_jobs.end()) {
+            const int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            const QByteArray rest = reply->readAll();
+            if (status == 200) { drain(rest + "\n"); }
+            else {
+                QString m = QJsonDocument::fromJson(rest).object().value("error").toObject().value("message").toString();
+                if (m.isEmpty()) m = status ? QString("HTTP %1").arg(status) : reply->errorString();
+                it = m_jobs.find(id); if (it != m_jobs.end()) it->error = "Shared Claude: " + m;
+            }
+            it = m_jobs.find(id); if (it != m_jobs.end()) it->done = true;
+        }
+        reply->deleteLater();
+    });
+}
+
+QString ReceiptsPlugin::askPoll(const QString& id)
+{
+    auto it = m_jobs.find(id);
+    if (it == m_jobs.end()) return compact(QJsonObject{{"done", true}, {"error", "unknown job"}, {"text", ""}});
+    const QJsonObject o{{"text", it->text}, {"done", it->done}, {"error", it->error}};
+    if (it->done) m_jobs.erase(it);
+    return compact(o);
 }

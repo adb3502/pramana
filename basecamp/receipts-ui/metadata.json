@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "type": "ui_qml",
   "category": "knowledge",
-  "description": "Pramana: check a claim against the evidence graph",
-  "view": "Main.qml",
+  "description": "Pramana: search the evidence behind any claim",
+  "view": "qml/Main.qml",
   "icon": "icons/receipts.png",
   "dependencies": ["receipts"],
 

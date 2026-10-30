@@ -9,7 +9,7 @@ else()
     message(FATAL_ERROR "LogosModule.cmake not found")
 endif()
 
-find_package(Qt6 REQUIRED COMPONENTS Sql)
+find_package(Qt6 REQUIRED COMPONENTS Sql Network)
 
 logos_module(
     NAME receipts
@@ -19,4 +19,4 @@ logos_module(
         src/receipts_plugin.cpp
 )
 
-target_link_libraries(receipts_module_plugin PRIVATE Qt6::Sql)
+target_link_libraries(receipts_module_plugin PRIVATE Qt6::Sql Qt6::Network)

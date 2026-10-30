@@ -8,7 +8,7 @@
     # Once you publish the core module, replace this URL with the github
     # repo + dir syntax, e.g.:
     #   receipts.url = "github:<org>/<repo>?dir=receipts-core";
-    receipts.url = "github:logos-co/logos-module-builder";
+    receipts.url = "path:/home/claude/logos-receipts/receipts-core";
   };
 
   outputs = inputs@{ logos-module-builder, ... }:
