@@ -50,6 +50,7 @@ function paperRecord(i, opts = {}) {
   return rec;
 }
 
+function build() {
 const server = new McpServer({ name: "pramana", version: "0.1.0" }, {
   instructions: "Pramana is a structured evidence graph extracted from scientific papers: each record says what a paper measured, in whom, with what estimate and interval, and points to the paper. Use these tools when a question is about what research found. Use your own web search for news, current events and anything outside the graph. When both are used, keep them apart in the answer: say which statements come from Pramana records (cite the paper IDs) and which come from the web. Pramana records carry no verdicts; do not present them as true or false." });
 
@@ -98,4 +99,12 @@ server.tool("pramana_claims", "Search the conclusions papers state about their o
 server.tool("pramana_receipts", "Published media claims already compared against the sources they cite (Pramana receipts), interpreted with Pramana fidelity lens v1.",
   {}, async () => out(REC.map(r => ({ id: r.id, outlet: r.outlet, speaker: r.speaker, quote: r.quote, cited: r.cited, found: r.found, verdict_note: r.verdict, fields: r.fields }))));
 
-await server.connect(new StdioServerTransport());
+return server;
+}
+
+if (process.env.PRAMANA_HTTP_PORT) {
+  const { startHttp } = await import("./http.js");
+  startHttp(build, Number(process.env.PRAMANA_HTTP_PORT));
+} else {
+  await build().connect(new StdioServerTransport());
+}

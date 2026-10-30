@@ -1,1 +1,13 @@
-{"name":"pramana-mcp","version":"0.1.0","type":"module","bin":{"pramana-mcp":"server.js"},"dependencies":{"@modelcontextprotocol/sdk":"1.17.0","zod":"3.23.8"}}
+{
+ "name": "pramana-mcp",
+ "version": "0.1.0",
+ "type": "module",
+ "bin": {
+  "pramana-mcp": "server.js"
+ },
+ "dependencies": {
+  "@modelcontextprotocol/sdk": "1.17.0",
+  "zod": "3.23.8",
+  "express": "4.21.2"
+ }
+}
