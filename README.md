@@ -33,7 +33,7 @@ deck/                 demo day slides
 |---|---|
 | Protocol app (bring your own key) | https://adb3502.github.io/pramana-protocol/ |
 | Deck | https://adb3502.github.io/pramana-deck/ |
-| Knowledge base snapshot on Logos Storage | `zDvZRwzm9SDY3WQvdd87mQPz1xquMwQELC18qdPVCRUQ9f4hZPtq` |
+| Knowledge base snapshot on Logos Storage | `zDvZRwzm1sq9mZA6qVdigHnzPFos7zbzH4QEukk3VLMjhZTxDnGB` |
 
 Fetch the snapshot with `logosctl call storage_module downloadToUrl "<CID>" "$PWD/pramana_snapshot.json" false 65536 false false`.
 
