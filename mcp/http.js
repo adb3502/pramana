@@ -1,9 +1,12 @@
 // Streamable HTTP transport for remote use (claude.ai custom connector). Stateless: one server per request.
 import express from "express";
+import { mountRelay } from "./relay.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 export function startHttp(build, port) {
   const app = express();
+  app.set("trust proxy", true);
   app.use(express.json({ limit: "1mb" }));
+  mountRelay(app);
   app.get("/", (_q, res) => res.type("text/plain").send("Pramana MCP server. Add <this URL>/mcp as a custom connector in Claude."));
   app.post("/mcp", async (req, res) => {
     try {

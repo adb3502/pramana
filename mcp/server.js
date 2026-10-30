@@ -10,7 +10,7 @@ import { dirname, join } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const SNAP_PATH = process.argv[2] || process.env.PRAMANA_SNAPSHOT || join(here, "pramana_snapshot.json");
-const APP_BASE = process.env.PRAMANA_APP || "https://adb3502.github.io/pramana-app/";
+const APP_BASE = process.env.PRAMANA_APP || "https://adb3502.github.io/pramana-protocol/";
 const SNAPSHOT_CID = process.env.PRAMANA_CID || "zDvZRwzm1sq9mZA6qVdigHnzPFos7zbzH4QEukk3VLMjhZTxDnGB";
 const D = JSON.parse(readFileSync(SNAP_PATH, "utf8"));
 const K = D.K, P = D.P, S = D.S, R = D.R, REC = D.receipts || [];
