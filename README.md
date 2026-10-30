@@ -31,7 +31,7 @@ deck/                 demo day slides
 
 | | |
 |---|---|
-| Protocol app (bring your own key) | https://adb3502.github.io/pramana-protocol/ |
+| Pramana app (search, networks, papers) | https://adb3502.github.io/pramana-app/ |`n| Protocol app (bring your own key) | https://adb3502.github.io/pramana-protocol/ |
 | Deck | https://adb3502.github.io/pramana-deck/ |
 | Knowledge base snapshot on Logos Storage | `zDvZRwzm1sq9mZA6qVdigHnzPFos7zbzH4QEukk3VLMjhZTxDnGB` |
 
