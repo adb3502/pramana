@@ -2,7 +2,7 @@
 
 *pramāṇa* (Sanskrit): a valid means of knowing.
 
-Pramana traces a claim back to the numbers it rests on. Built at Field Station Rajasthan (Logos x Zu-Grama), October 2026.
+Pramana is an open evidence graph built from research papers: every estimate a paper reports, stored with the sentence or table it came from, and an app to search it. Built at Field Station Rajasthan (Logos x Zu-Grama), October 2026.
 
 The project has two parts:
 
